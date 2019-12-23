@@ -18,6 +18,7 @@ public class DrawShapesExample {
 		frame.setVisible(true);
 	}
 
+//
 	static class CustomPaintComponent extends Component {
 		public void paint(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
