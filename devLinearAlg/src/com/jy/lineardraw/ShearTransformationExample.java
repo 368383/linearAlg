@@ -7,13 +7,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-public class DrawShapesExample {
+public class ShearTransformationExample {
 
 	public static void main(String[] args) {
 		Frame frame = new Frame();
 		frame.add(new CustomPaintComponent());
-		int frameWidth = 500;
-		int frameHeight = 500;
+		int frameWidth = 1000;
+		int frameHeight = 100;
 		frame.setSize(frameWidth, frameHeight);
 		frame.setVisible(true);
 	}
@@ -23,27 +23,15 @@ public class DrawShapesExample {
 		public void paint(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
 			axis(g2d);
-			tickmarks(g2d);
-			letteringArrays(g2d);
+			drawingLetters(g2d);
 		}
 
 	}
 
 	public static void axis(Graphics axis) {
-		axis.drawLine(10, 450, 450, 450);
-		axis.drawLine(10, 450, 10, 10);
-	}
 
-	public static void tickmarks(Graphics ticks) {
-		int intialx = 10;
-		int intialy = 450;
-		int increment = 10;
-		for (int i = 1; i <= 44; i++) {
-			int xCoord = increment * i;
-			ticks.drawLine(xCoord, intialy - 10, xCoord, intialy + 10);
-			int yCoord = intialy - increment * i;
-			ticks.drawLine(intialx - 10, yCoord, intialx + 10, yCoord);
-		}
+		axis.drawLine(500, 0, 500, 1000);
+		axis.drawLine(0, 500, 1000, 500);
 	}
 
 	public static int[] shear(int[] matrix) {
@@ -121,71 +109,78 @@ public class DrawShapesExample {
 		return matrix;
 	}
 
-	public static void letteringArrays(Graphics draw) {
+	public static void drawingLetters(Graphics draw) {
 		System.out.println("________________________________");
 		System.out.println("LETTER M");
-		int[] alphaM = { 50, 440, 50, 380, 75, 420, 100, 380, 100, 440 };
+		int[] alphaM = { 0, 50, 0, 0, 25, 25, 50, 0, 50, 50 };
 		drawingM(alphaM, draw);
-		alphaM = yShift(shear(alphaM));
+		yShift(shear(alphaM));
 		drawingM(alphaM, draw);
+
 		System.out.println("\n" + "________________________________");
 		System.out.println("LETTER A");
-		int[] alphaA = { 110, 440, 135, 380, 160, 440, 123, 410, 147, 410 };
+		int[] alphaA = { 60, 50, 85, 0, 110, 50, 72, 25, 97, 25 };
 		drawingA(alphaA, draw);
-		alphaA = yShift(shear(alphaA));
+		yShift(shear(alphaA));
 		drawingA(alphaA, draw);
+
 		System.out.println("\n" + "________________________________");
 		System.out.println("LETTER T");
-		int[] alphaT = { 170, 380, 220, 380, 195, 380, 195, 440 };
+		int[] alphaT = { 120, 0, 170, 0, 145, 0, 145, 50 };
 		drawingT(alphaT, draw);
-		alphaT = yShift(shear(alphaT));
+		yShift(shear(alphaT));
 		drawingT(alphaT, draw);
+
 		System.out.println("\n" + "________________________________");
 		System.out.println("LETTER H");
-		int[] alphaH = { 230, 380, 230, 440, 280, 380, 280, 440, 230, 410, 280, 410 };
+		int[] alphaH = { 180, 50, 180, 0, 230, 50, 230, 0, 180, 25, 230, 25 };
 		drawingH(alphaH, draw);
-		alphaH = yShift(shear(alphaH));
+		yShift(shear(alphaH));
 		drawingH(alphaH, draw);
 
 	}
 
 	public static void drawingM(int[] alphaM, Graphics draw) {
+
 		// VERTICAL 1
-		draw.drawLine(alphaM[0], alphaM[1], alphaM[2], alphaM[3]);
+		draw.drawLine(alphaM[0] + 500, alphaM[1] + 450, alphaM[2] + 500, alphaM[3] + 450);
 		// SLANT
-		draw.drawLine(alphaM[2], alphaM[3], alphaM[4], alphaM[5]);
+		draw.drawLine(alphaM[2] + 500, alphaM[3] + 450, alphaM[4] + 500, alphaM[5] + 450);
 		// SLANT
-		draw.drawLine(alphaM[4], alphaM[5], alphaM[6], alphaM[7]);
+		draw.drawLine(alphaM[4] + 500, alphaM[5] + 450, alphaM[6] + 500, alphaM[7] + 450);
 		// SLANT
-		draw.drawLine(alphaM[6], alphaM[7], alphaM[8], alphaM[9]);
+		draw.drawLine(alphaM[6] + 500, alphaM[7] + 450, alphaM[8] + 500, alphaM[9] + 450);
 
 	}
 
 	public static void drawingA(int[] alphaA, Graphics draw) {
+
 		// SLANT
-		draw.drawLine(alphaA[0], alphaA[1], alphaA[2], alphaA[3]);
+		draw.drawLine(alphaA[0] + 500, alphaA[1] + 450, alphaA[2] + 500, alphaA[3] + 450);
 		// SLANT
-		draw.drawLine(alphaA[2], alphaA[3], alphaA[4], alphaA[5]);
+		draw.drawLine(alphaA[2] + 500, alphaA[3] + 450, alphaA[4] + 500, alphaA[5] + 450);
 		// HORRIZONTAL
-		draw.drawLine(alphaA[6], alphaA[7], alphaA[8], alphaA[9]);
+		draw.drawLine(alphaA[6] + 500, alphaA[7] + 450, alphaA[8] + 500, alphaA[9] + 450);
 
 	}
 
 	public static void drawingT(int[] alphaT, Graphics draw) {
+
 		// HORRIZONTAL
-		draw.drawLine(alphaT[0], alphaT[1], alphaT[2], alphaT[3]);
+		draw.drawLine(alphaT[0] + 500, alphaT[1] + 450, alphaT[2] + 500, alphaT[3] + 450);
 		// VERITCAL
-		draw.drawLine(alphaT[4], alphaT[5], alphaT[6], alphaT[7]);
+		draw.drawLine(alphaT[4] + 500, alphaT[5] + 450, alphaT[6] + 500, alphaT[7] + 450);
 
 	}
 
 	public static void drawingH(int[] alphaH, Graphics draw) {
+
 		// VERTICAL
-		draw.drawLine(alphaH[0], alphaH[1], alphaH[2], alphaH[3]);
+		draw.drawLine(alphaH[0] + 500, alphaH[1] + 450, alphaH[2] + 500, alphaH[3] + 450);
 		// VERTICAL
-		draw.drawLine(alphaH[4], alphaH[5], alphaH[6], alphaH[7]);
+		draw.drawLine(alphaH[4] + 500, alphaH[5] + 450, alphaH[6] + 500, alphaH[7] + 450);
 		// HORRIZONTAL
-		draw.drawLine(alphaH[8], alphaH[9], alphaH[10], alphaH[11]);
+		draw.drawLine(alphaH[8] + 500, alphaH[9] + 450, alphaH[10] + 500, alphaH[11] + 450);
 
 	}
 }
