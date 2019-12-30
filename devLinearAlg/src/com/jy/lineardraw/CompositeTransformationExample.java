@@ -38,11 +38,15 @@ public class CompositeTransformationExample {
 	public static void askActions() {
 
 		while (true) {
-			System.out.println("COMMANDS - HERE ARE THE FOLLOWING ACTIONS YOU CAN DO - THEY ARE NOT CASE SENSITIVE"
-					+ "\nHOR - HORRIZONTAL SHIFT" + "\nVER - VERTICAL SHIFT" + "\nROT - ROTATION" + "\nDIA -  DIALATION"
-					+ "\nHORREF - HORRIZONTAL DIALATION" + "\nVERREF - VERTICAL DIALATION"
-					+ "\nFINISH - TO COMPLETE FINISH ADDING");
-			System.out.print("Your Input:");
+			System.out.println("LINEAR ALGEBRA TRANSFORMATIONS DEMO - LIST OF COMMANDS"
+					+ "\nSYNTAX: ENTER IN COMMAND FIRST (NOT CASE SENSITIVE), THEN ENTER AMOUNT"
+					+ "\n----------------------------------------------------------------------"
+					+ "\nHOR - HORRIZONTAL SHIFT (-500 TO 500 PIXELS)" + "\nVER - VERTICAL SHIFT (-500 TO 500 PIXELS)"
+					+ "\nROT - ROTATION(-INFINITY TO INFINITY IN DEGREES)"
+					+ "\nDIA -  DIALATION (-3 TO 3 - WARNING, MAY LEAVE GRAPH IF TOO LARGE)"
+					+ "\nHORREF - HORRIZONTAL REFLECTION" + "\nVERREF - VERTICAL REFLECTION"
+					+ "\nFINISH - TO COMPLETE ADDING COMMANDS");
+			System.out.print("Your Desired Command Input:");
 			Scanner actionInput = new Scanner(System.in);
 			String alpha = actionInput.next().toUpperCase();
 			if (alpha.equals("FINISH")) {
@@ -54,20 +58,21 @@ public class CompositeTransformationExample {
 				double input = 0;
 				listOfActions.add(alpha);
 				if (!alpha.contains("REF")) {
-					System.out.println("AMOUNT - HOW MUCH WOULD YOU LIKE TO DO SUCH ACTION ");
-					System.out.print("Your Input:");
+					System.out.print("Your Desired Amount Input:");
 
 					input = actionInput.nextDouble();
 					unitsOfActions.add(input);
 				} else {
 					unitsOfActions.add((double) -1);
 				}
-				System.out.println("ACTION ADDED \t ACTION: " + alpha + "\t AMOUNT: " + input);
+				System.out.println("__________________________________________________\n" + "ACTION ADDED \t ACTION: "
+						+ alpha + "\t AMOUNT: " + input + "\n__________________________________________________");
+
 			} else {
 				System.out.println("INVALID INPUT");
 			}
 		}
-		System.out.println("HERE ARE YOUR INPUTS" + "\n________________________");
+		System.out.println("__________________________________________________\n" + "HERE ARE YOUR INPUTS");
 		for (String currentAction : listOfActions) {
 			System.out.print(currentAction + "\t");
 		}
@@ -75,6 +80,7 @@ public class CompositeTransformationExample {
 		for (Double currentParam : unitsOfActions) {
 			System.out.print(currentParam + "\t");
 		}
+		System.out.println();
 
 	}
 
@@ -132,80 +138,78 @@ public class CompositeTransformationExample {
 	}
 
 	public static void horrizontalShift(int[] matrix, int amount) {
-
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
+		System.out.println("HORRIZONTAL SHIFT");
+		int[] originalMatrix = matrix.clone();
+		
 		for (int i = 0; i < matrix.length - 1; i = i + 2) {
 			matrix[i] = (int) (matrix[i] + amount);
 		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
-	}
-
-	public static void horrizontalReflection(int[] matrix, int amount) {
-
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
-		for (int i = 1; i < matrix.length; i = i + 2) {
-			matrix[i] = (int) (matrix[i] * -1);
-		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
+		
+		String[] operationsMatrix = { "X+" + amount, "", "y", "" };
+		printIndex(matrix, originalMatrix, operationsMatrix);
 	}
 
 	public static void verticalReflection(int[] matrix, int amount) {
+		System.out.println("VERTICAL REFLECTION");
+		int[] originalMatrix = matrix.clone();
+		
+		for (int i = 1; i < matrix.length; i = i + 2) {
+			matrix[i] = (int) (matrix[i] * -1);
+		}
+		
+		String[] operationsMatrix = { "1", "0", "0", "-1" };
+		printIndex(matrix, originalMatrix, operationsMatrix);
+	}
 
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
+	public static void horrizontalReflection(int[] matrix, int amount) {
+		System.out.println("HORRIZONTAL REFLECTION");
+		int[] originalMatrix = matrix.clone();
 		for (int i = 0; i < matrix.length; i = i + 2) {
 			matrix[i] = (int) (matrix[i] * -1);
 		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
+		String[] operationsMatrix = { "-1", "0", "0", "1" };
+		printIndex(matrix, originalMatrix, operationsMatrix);
 	}
 
 	public static void verticalShift(int[] matrix, int amount) {
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
+		System.out.println("VERTICAL SHIFT");
+		int[] originalMatrix = matrix.clone();
 		for (int i = 1; i < matrix.length; i = i + 2) {
 			matrix[i] = (int) (matrix[i] + amount);
-			// System.out.println("I value " + i);
+
 		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
-		System.out.println();
+		String[] operationsMatrix = { "x", "", "y+" + amount, "" };
+		printIndex(matrix, originalMatrix, operationsMatrix);
 	}
 
 	public static void rotation(int[] matrix, int amount) {
-
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
-		System.out.println();
+		System.out.println("ROTATION");
+		int[] originalMatrix = matrix.clone();
 		double[] rotation = { Math.cos(2 * Math.PI - Math.toRadians(amount)),
 				Math.sin(2 * Math.PI - Math.toRadians(amount)), -Math.sin(2 * Math.PI - Math.toRadians(amount)),
 				Math.cos(2 * Math.PI - Math.toRadians(amount)) };
-		printIndex(rotation);
-		System.out.println();
+
 		for (int i = 0; i < matrix.length - 1; i = i + 2) {
 			// PRESERVE EACH OF THE VALUES
 			int firstHolder = matrix[i];
 			int secondHolder = matrix[i + 1];
 			// MATRIX MULTIPLIACATION
-			// double[] sheer = { 1, .25, 0, 1 };
 			matrix[i] = (int) (firstHolder * rotation[0] + secondHolder * rotation[1]);
 			matrix[i + 1] = (int) (firstHolder * rotation[2] + secondHolder * rotation[3]);
 			// NEXT SET
 		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
-		System.out.println();
+
+		String[] operationsMatrix = new String[rotation.length];
+		for (int i=0;i<operationsMatrix.length;i++) {
+			operationsMatrix[i] = String.valueOf(rotation[i]);
+		}
+		printIndex(matrix, originalMatrix, operationsMatrix);
 	}
 
 	public static void dialation(int[] matrix, int amount) {
 
-		System.out.println("PRIOR TO SHIFT");
-		printIndex(matrix);
-		System.out.println();
+		System.out.println("DIALATION");
+		int[] originalMatrix = matrix.clone();
 
 		for (int i = 0; i < matrix.length; i = i + 2) {
 			matrix[i] = (int) (matrix[i] * amount);
@@ -213,32 +217,82 @@ public class CompositeTransformationExample {
 		for (int i = 1; i < matrix.length; i = i + 2) {
 			matrix[i] = (int) (matrix[i] * amount);
 		}
-		System.out.println("AFTER TO SHIFT");
-		printIndex(matrix);
-		System.out.println();
+		String[] operationsMatrix = {String.valueOf(amount),"0","0",String.valueOf(amount)};
+		printIndex(matrix, originalMatrix,operationsMatrix);
 	}
 
-	private static void printIndex(int[] matrix) {
-		for (int i = 0; i < matrix.length; i = i + 2) {
-			System.out.print(matrix[i] + "\t");
+	private static void printIndex(int[] originalMatrix, int[] matrix, String[] operationsMatrix) {
+		System.out.print("Action Matrix");
+		for (int i = 0; i < (int) (operationsMatrix[0].length()*2); i++) {
+			System.out.print(" ");
 		}
+		System.out.print("Before Shift");
+		for (int i = 0; i < (int) (originalMatrix.length/2) - 1; i++) {
+			System.out.print("\t");
+		}
+		System.out.print("AFTER SHIFT" + "\n");
+		for (int i = 0; i < 2; i++) {
+			System.out.print(operationsMatrix[i] + "\t");
+		}
+		System.out.print("|  ");
+
+		printTopRow(matrix);
+		System.out.print("|  ");
+
+		printTopRow(originalMatrix);
 		System.out.println();
+		for (int i = 2; i < 4; i++) {
+			System.out.print(operationsMatrix[i] + "\t");
+		}
+		System.out.print("|  ");
+
+		printBottomRow(matrix);
+		System.out.print("|  ");
+
+		printBottomRow(originalMatrix);
+		System.out.println();
+		printActualDisplayValues(matrix,originalMatrix );
+	}
+
+	private static void printBottomRow(int[] matrix) {
 		for (int i = 1; i < matrix.length; i = i + 2) {
 			System.out.print(matrix[i] + "\t");
 		}
-		System.out.println();
-
 	}
 
-	private static void printActualDisplayValues(int[] matrix) {
+	private static void printTopRow(int[] matrix) {
 		for (int i = 0; i < matrix.length; i = i + 2) {
-			System.out.print((matrix[i] + 500) + "\t");
+			System.out.print(matrix[i] + "\t");
+		}
+	}
+
+	private static void printActualDisplayValues(int[] matrix, int[] originalMatrix) {
+		System.out.print("DEBUG LINE"+" : "+"BEFORE SHIFT MATRIX");
+		
+	
+		for (int i = 0; i < (int) (originalMatrix.length/2) - 1; i++) {
+			System.out.print("\t");
+		}
+		System.out.print("AFTER SHIFT MATRIX");
+		System.out.println();
+		for (int i = 0; i < matrix.length; i = i + 2) {
+			System.out.print(500 + matrix[i] + "\t");
+		}
+		System.out.print("|  ");
+
+		for (int i = 0; i < originalMatrix.length; i = i + 2) {
+			System.out.print(500 + originalMatrix[i] + "\t");
 		}
 		System.out.println();
 		for (int i = 1; i < matrix.length; i = i + 2) {
-			System.out.print((-1 * matrix[i] + 500) + "\t");
+			System.out.print(500 - matrix[i] + "\t");
 		}
-		System.out.println();
+		System.out.print("|  ");
+
+		for (int i = 1; i < originalMatrix.length; i = i + 2) {
+			System.out.print(500 - originalMatrix[i] + "\t");
+		}
+		System.out.println("\n---------------------------------------");
 
 	}
 
@@ -256,30 +310,34 @@ public class CompositeTransformationExample {
 	}
 
 	public static void drawingLetters(Graphics draw) {
-		System.out.println("________________________________");
-		System.out.println("LETTER M");
+		System.out.println("\n__________________________________________________");
+		System.out.print("LETTER M" + "\t");
 		int[] alphaM = { 0, 0, 0, 50, 25, 25, 50, 50, 50, 0 };
+
 		drawingM(alphaM, draw);
 		execution(alphaM);
 		drawingM(alphaM, draw);
 
-		System.out.println("\n" + "________________________________");
-		System.out.println("LETTER A");
+		System.out.println("\n__________________________________________________");
+		System.out.print("LETTER A" + "\t");
 		int[] alphaA = { 60, 0, 85, 50, 110, 0, 72, 25, 97, 25 };
+
 		drawingA(alphaA, draw);
 		execution(alphaA);
 		drawingA(alphaA, draw);
 
-		System.out.println("\n" + "________________________________");
-		System.out.println("LETTER T");
+		System.out.println("\n__________________________________________________");
+		System.out.print("LETTER T" + "\t");
 		int[] alphaT = { 120, 50, 170, 50, 145, 50, 145, 0 };
+
 		drawingT(alphaT, draw);
 		execution(alphaT);
 		drawingT(alphaT, draw);
 
-		System.out.println("\n" + "________________________________");
-		System.out.println("LETTER H");
+		System.out.println("\n__________________________________________________");
+		System.out.print("LETTER H" + "\t");
 		int[] alphaH = { 180, 0, 180, 50, 230, 0, 230, 50, 180, 25, 230, 25 };
+
 		drawingH(alphaH, draw);
 		execution(alphaH);
 		drawingH(alphaH, draw);
@@ -295,8 +353,6 @@ public class CompositeTransformationExample {
 		draw.drawLine(alphaM[6] + 500, -1 * alphaM[7] + 500, alphaM[4] + 500, -1 * alphaM[5] + 500);
 		// SLANT
 		draw.drawLine(alphaM[8] + 500, -1 * alphaM[9] + 500, alphaM[6] + 500, -1 * alphaM[7] + 500);
-		System.out.println("DEBUG LINE");
-		printActualDisplayValues(alphaM);
 
 	}
 
